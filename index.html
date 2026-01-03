@@ -4,17 +4,22 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="cdcicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CDC Computer</title>
+    <title>CDC Computer - ហាងលក់កុំព្យូទ័រ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;700&display=swap" rel="stylesheet" />
     <style>
-        body { font-family: "Kantumruy Pro", sans-serif; background-color: #f8fafc; }
+        body { font-family: "Kantumruy Pro", sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
         .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .product-card:hover { transform: translateY(-5px); }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        .category-tab.active { background-color: #2563eb; color: white; border-color: #2563eb; }
         .loader { border: 3px solid #e2e8f0; border-top: 3px solid #2563eb; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .modal-active { overflow: hidden; }
-        .cart-badge { position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
+        .cart-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; }
+        /* សម្រាប់ស្ក្រូលបារស្អាត */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="antialiased text-gray-900">
@@ -23,10 +28,11 @@
     <div class="bg-gray-900 text-white py-2 text-xs">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center gap-4">
-                <a href="https://web.facebook.com/CDC.Computer.Cambodia" target="_blank" class="hover:text-blue-400 flex items-center gap-1">Facebook</a>
-                <a href="https://t.me/CDCCOMPUTER093" target="_blank" class="hover:text-blue-300 flex items-center gap-1">Telegram</a>
+                <a href="https://web.facebook.com/CDC.Computer.Cambodia" target="_blank" class="hover:text-blue-400 flex items-center gap-1 transition-colors">Facebook</a>
+                <a href="https://t.me/CDCCOMPUTER093" target="_blank" class="hover:text-blue-300 flex items-center gap-1 transition-colors">Telegram</a>
             </div>
             <div class="flex items-center gap-3 font-bold">
+                <span class="hidden sm:inline">ទំនាក់ទំនង៖ </span>
                 <span>093 844 884 / 099 844 884</span>
             </div>
         </div>
@@ -34,142 +40,194 @@
 
     <!-- Header -->
     <header class="bg-white border-b sticky top-0 z-40 shadow-sm">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
-                <div class=" p-2 rounded-lg text-white">
-                    <img src="cdcicon.png" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                </div>
-                <h1 class="text-xl font-bold text-gray-800 uppercase hidden sm:block">CDC Computer</h1>
-            </div>
-
-            <div class="flex items-center gap-4 flex-1 justify-end md:justify-center px-4">
-                <div class="relative w-full max-w-xs hidden md:block">
-                    <input type="text" id="searchInput" placeholder="ស្វែងរកទំនិញ..." class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                    <span class="absolute left-3 top-2.5 text-gray-400"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="location.reload()">
+                <img src="cdcicon.png" class="h-10 w-10 group-hover:scale-110 transition-transform" alt="Logo">
+                <div class="leading-tight">
+                    <h1 class="text-lg font-bold text-gray-800 uppercase leading-none">CDC Computer</h1>
+                    <p class="text-[10px] text-blue-600 font-medium tracking-widest">TECHNOLOGY STORE</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <button onclick="toggleWishlistDisplay()" class="relative p-2 text-gray-600 hover:text-red-500">
+            <!-- Desktop Search -->
+            <div class="hidden md:flex items-center flex-1 justify-center px-8">
+                <div class="relative w-full max-w-md">
+                    <input type="text" id="searchInput" placeholder="ស្វែងរកទំនិញដែលអ្នកចង់បាន..." class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all border border-transparent focus:bg-white">
+                    <span class="absolute left-3 top-2.5 text-gray-400">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button onclick="toggleWishlistDisplay()" class="relative p-2 text-gray-600 hover:text-red-500 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                     <span id="wishlistCount" class="cart-badge hidden">0</span>
                 </button>
-                <button onclick="toggleCart()" class="relative p-2 text-gray-600 hover:text-blue-600">
+                <button onclick="toggleCart()" class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     <span id="cartCount" class="cart-badge hidden">0</span>
                 </button>
             </div>
         </div>
-        <!-- Mobile Search -->
-        <div class="md:hidden px-4 pb-3">
-             <input type="text" id="searchInputMobile" placeholder="ស្វែងរកទំនិញ..." class="w-full px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none">
+        
+        <!-- Mobile Search & Category Tabs -->
+        <div class="border-t">
+            <div class="md:hidden px-4 py-2">
+                <input type="text" id="searchInputMobile" placeholder="ស្វែងរកទំនិញ..." class="w-full px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none border border-gray-200">
+            </div>
+            <!-- Category Scroll -->
+            <div id="categoryContainer" class="container mx-auto px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap">
+                <button onclick="filterByCategory('ទាំងអស់')" class="category-tab active px-4 py-1.5 rounded-full border text-sm font-medium transition-all hover:border-blue-500">ទាំងអស់</button>
+                <!-- នឹងបញ្ចូលដោយ JS -->
+            </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-        <!-- Loading -->
-        <div id="loading" class="flex flex-col items-center justify-center py-20">
+    <main class="container mx-auto px-4 py-6">
+        <!-- Loading State -->
+        <div id="loading" class="flex flex-col items-center justify-center py-24">
             <div class="loader mb-4"></div>
-            <p class="text-gray-500">កំពុងទាញទិន្នន័យ...</p>
+            <p class="text-gray-500 animate-pulse">កំពុងរៀបចំទំនិញជូនអ្នក...</p>
         </div>
 
-        <!-- Grid -->
+        <!-- Product Grid -->
         <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 hidden"></div>
 
         <!-- Load More -->
         <div id="loadMoreContainer" class="mt-12 text-center hidden">
-            <button id="loadMoreBtn" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-md hover:bg-blue-700 transition-colors">បង្ហាញបន្ថែម</button>
+            <button id="loadMoreBtn" class="bg-white border-2 border-blue-600 text-blue-600 px-10 py-2.5 rounded-full font-bold hover:bg-blue-600 hover:text-white transition-all transform active:scale-95 shadow-sm">បង្ហាញបន្ថែម</button>
         </div>
 
-        <div id="noResults" class="hidden text-center py-20 text-gray-500">រកមិនឃើញទំនិញទេ</div>
+        <!-- No Results -->
+        <div id="noResults" class="hidden text-center py-24">
+            <div class="bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <p class="text-gray-500 font-medium">មិនមានទំនិញដែលអ្នកស្វែងរកទេ</p>
+            <button onclick="location.reload()" class="mt-4 text-blue-600 underline">បង្ហាញទាំងអស់ឡើងវិញ</button>
+        </div>
     </main>
 
-    <!-- Product Modal (Details) -->
-    <div id="productModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 p-2 bg-gray-100 rounded-full text-gray-500 hover:text-black hover:bg-gray-200 transition-all">
+    <!-- Product Modal -->
+    <div id="productModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative shadow-2xl animate-in zoom-in duration-300">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 p-2 bg-white/80 rounded-full text-gray-500 hover:text-black shadow transition-all">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
-            <div id="modalContent" class="p-6 md:p-10">
-                <!-- Content injected via JS -->
-            </div>
+            <div id="modalContent" class="p-6 md:p-10"></div>
         </div>
     </div>
 
     <!-- Cart Sidebar -->
-    <div id="cartSidebar" class="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white shadow-2xl transform translate-x-full transition-transform hidden flex flex-col border-l">
+    <div id="cartSidebar" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out hidden flex flex-col">
         <div class="p-4 border-b flex justify-between items-center bg-gray-50">
-            <h2 class="font-bold text-lg">កន្ត្រកទំនិញ</h2>
-            <button onclick="toggleCart()" class="text-gray-500 hover:bg-gray-200 p-1 rounded"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            <div class="flex items-center gap-2">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                <h2 class="font-bold text-lg">កន្ត្រកទំនិញរបស់អ្នក</h2>
+            </div>
+            <button onclick="toggleCart()" class="text-gray-400 hover:bg-gray-200 p-1.5 rounded-full transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
         </div>
         
-        <div id="cartItems" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+        <div id="cartItems" class="flex-grow overflow-y-auto p-4 space-y-4">
+            <!-- Items injected by JS -->
+        </div>
         
-        <!-- Checkout Form inside Cart -->
-        <div class="p-4 border-t bg-gray-50 space-y-3">
-            <div class="space-y-2">
-                <input type="text" id="custName" placeholder="ឈ្មោះអ្នកទិញ *" class="w-full px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                <input type="text" id="custPhone" placeholder="លេខទូរស័ព្ទ *" class="w-full px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                <textarea id="custAddress" placeholder="ទីតាំង ឬអាសយដ្ឋានដឹកជញ្ជូន *" class="w-full px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none h-20"></textarea>
+        <div class="p-4 border-t bg-gray-50 space-y-4">
+            <div class="space-y-3">
+                <input type="text" id="custName" placeholder="ឈ្មោះអ្នកទិញ *" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <input type="text" id="custPhone" placeholder="លេខទូរស័ព្ទ *" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <textarea id="custAddress" placeholder="ទីតាំង ឬអាសយដ្ឋានដឹកជញ្ជូន *" class="w-full px-4 py-2 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none h-20 transition-all"></textarea>
             </div>
             
-            <div class="flex justify-between font-bold text-xl py-2 border-t">
-                <span>សរុប៖</span>
+            <div class="flex justify-between items-center font-bold text-xl px-2">
+                <span class="text-gray-600">សរុប៖</span>
                 <span id="cartTotal" class="text-blue-600">$0.00</span>
             </div>
 
-            <!-- Payment QR Section -->
-            <div class="bg-blue-50 p-3 rounded-xl flex items-center gap-3 border border-blue-100">
-                <div class="w-16 h-16 bg-white p-1 rounded border">
-                    <!-- Replace with your actual QR URL -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ABA_PAYMENT_QR_OR_LINK" alt="ABA QR" class="w-full h-full object-contain">
-                </div>
-                <div class="text-xs">
-                    <p class="font-bold text-blue-800">ទូទាត់ប្រាក់តាម ABA/Bakong</p>
-                    <p class="text-gray-500">ស្កែនដើម្បីទូទាត់ រួចផ្ញើវិក្កយបត្រ</p>
-                </div>
-            </div>
-
-            <button onclick="orderViaTelegram()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors shadow-lg">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.891 8.146l-2.003 9.445c-.149.659-.538.822-1.088.513l-3.051-2.247-1.472 1.417c-.163.163-.3.3-.614.3l.219-3.107 5.654-5.108c.246-.219-.054-.341-.38-.124l-6.99 4.402-3.012-.942c-.655-.205-.668-.655.137-.969l11.771-4.535c.545-.203 1.021.124.829.949z"/></svg>
-                កម្មង់ទិញឥឡូវនេះ
+            <button onclick="orderViaTelegram()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-blue-700 active:scale-[0.98] transition-all shadow-lg shadow-blue-200">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.891 8.146l-2.003 9.445c-.149.659-.538.822-1.088.513l-3.051-2.247-1.472 1.417c-.163.163-.3.3-.614.3l.219-3.107 5.654-5.108c.246-.219-.054-.341-.38-.124l-6.99 4.402-3.012-.942c-.655-.205-.668-.655.137-.969l11.771-4.535c.545-.203 1.021.124.829.949z"/></svg>
+                បញ្ជាទិញតាម Telegram
             </button>
         </div>
     </div>
 
     <script>
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlrxWsu4bchDXwiDcitxq71ZJAVmpkEeAdBvRXox9OWiDS5O1qwBetSjcFjmuRVP7FeZIF609O2n1H/pub?gid=0&single=true&output=csv";
-        const TELEGRAM_USER = "CDCCOMPUTER093"; // Account ឬ Bot Username
+        const TELEGRAM_USER = "CDCCOMPUTER093"; 
         
         let allProducts = [];
         let filteredProducts = [];
         let displayedCount = 15;
         let cart = [];
         let wishlist = [];
+        let currentCategory = 'ទាំងអស់';
 
         async function fetchProducts() {
             try {
                 const response = await fetch(CSV_URL);
                 const data = await response.text();
                 const rows = data.split(/\r?\n/).slice(1);
+                
                 allProducts = rows.map((row, index) => {
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    if (cols.length < 2) return null;
                     return {
                         id: index,
                         name: cols[0]?.replace(/"/g, "").trim(),
                         price: parseFloat(cols[1]?.replace(/"/g, "").trim()) || 0,
-                        qty: parseInt(cols[2]?.replace(/"/g, "").trim()) || 0,
+                        category: cols[2]?.replace(/"/g, "").trim() || "ផ្សេងៗ",
                         image: cols[3]?.replace(/"/g, "").trim() || "https://via.placeholder.com/400x400?text=No+Image",
-                        desc: cols[4]?.replace(/"/g, "").trim() || "មិនមានការបរិយាយព័ត៌មានលម្អិតសម្រាប់ផលិតផលនេះទេ។" // Column E in Sheet
+                        desc: cols[4]?.replace(/"/g, "").trim() || "មិនមានការបរិយាយព័ត៌មានលម្អិត..."
                     };
-                }).filter(p => p.name);
+                }).filter(p => p && p.name);
+
+                generateCategories();
                 filteredProducts = allProducts;
                 renderProducts();
                 document.getElementById("loading").classList.add("hidden");
             } catch (err) {
                 console.error(err);
-                document.getElementById("loading").innerText = "កំហុសក្នុងការទាញទិន្នន័យ!";
+                document.getElementById("loading").innerHTML = `<p class="text-red-500">ការទាញទិន្នន័យមានបញ្ហា។ សូមព្យាយាមម្តងទៀត!</p>`;
             }
+        }
+
+        function generateCategories() {
+            const categories = ['ទាំងអស់', ...new Set(allProducts.map(p => p.category))];
+            const container = document.getElementById("categoryContainer");
+            container.innerHTML = "";
+            
+            categories.forEach(cat => {
+                if(!cat) return;
+                const btn = document.createElement("button");
+                btn.className = `category-tab px-5 py-1.5 rounded-full border text-sm font-medium transition-all hover:bg-gray-100 ${cat === currentCategory ? 'active' : ''}`;
+                btn.innerText = cat;
+                btn.onclick = () => filterByCategory(cat);
+                container.appendChild(btn);
+            });
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update Active Tab UI
+            document.querySelectorAll('.category-tab').forEach(btn => {
+                if(btn.innerText === category) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            if (category === 'ទាំងអស់') {
+                filteredProducts = allProducts;
+            } else {
+                filteredProducts = allProducts.filter(p => p.category === category);
+            }
+            
+            renderProducts(true);
+            // Scroll categories to view
+            const activeBtn = document.querySelector('.category-tab.active');
+            activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
 
         function renderProducts(reset = true) {
@@ -182,23 +240,24 @@
             items.forEach(p => {
                 const isLoved = wishlist.includes(p.id);
                 const div = document.createElement("div");
-                div.className = "product-card bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer shadow-sm";
-                div.onclick = (e) => {
-                    if(!e.target.closest('button')) openDetails(p.id);
-                };
+                div.className = "product-card bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer animate-in fade-in slide-in-from-bottom-4 duration-500";
+                div.onclick = (e) => { if(!e.target.closest('button')) openDetails(p.id); };
 
                 div.innerHTML = `
                     <div class="relative aspect-square overflow-hidden bg-gray-50">
-                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                        <button onclick="toggleHeart(${p.id})" class="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-full hover:bg-white shadow-md transition-all active:scale-90">
-                            <svg class="w-5 h-5 ${isLoved ? 'text-red-500 fill-current' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                        <div class="absolute top-2 left-2">
+                             <span class="bg-black/50 backdrop-blur-md text-white text-[10px] px-2 py-0.5 rounded-lg uppercase tracking-wider font-bold">${p.category}</span>
+                        </div>
+                        <button onclick="toggleHeart(${p.id})" class="absolute top-2 right-2 p-2 bg-white/90 backdrop-blur rounded-full hover:bg-white shadow-sm transition-all active:scale-90">
+                            <svg class="w-4 h-4 ${isLoved ? 'text-red-500 fill-current' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                         </button>
                     </div>
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="font-bold text-sm text-gray-800 line-clamp-2 mb-3 h-10">${p.name}</h3>
+                    <div class="p-3 flex flex-col flex-grow">
+                        <h3 class="font-bold text-[13px] text-gray-800 line-clamp-2 mb-2 h-10 leading-snug">${p.name}</h3>
                         <div class="mt-auto flex justify-between items-center">
-                            <span class="text-blue-600 font-extrabold text-lg">$${p.price.toFixed(2)}</span>
-                            <button onclick="addToCart(${p.id})" class="bg-blue-50 p-2.5 rounded-xl text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                            <span class="text-blue-600 font-extrabold text-base">$${p.price.toFixed(2)}</span>
+                            <button onclick="addToCart(${p.id})" class="bg-blue-50 p-2 rounded-xl text-blue-600 hover:bg-blue-600 hover:text-white transition-all">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                             </button>
                         </div>
@@ -212,34 +271,35 @@
             document.getElementById("noResults").classList.toggle("hidden", filteredProducts.length > 0);
         }
 
-        // --- Details Modal ---
         function openDetails(id) {
             const p = allProducts.find(x => x.id === id);
             const content = document.getElementById("modalContent");
             content.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                    <div class="rounded-3xl overflow-hidden shadow-lg border bg-gray-50 flex items-center justify-center">
-                        <img src="${p.image}" class="max-w-full max-h-[500px] object-contain p-4" onerror="this.src='https://via.placeholder.com/600x600?text=រូបភាពមិនច្បាស់'">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+                    <div class="rounded-3xl overflow-hidden bg-gray-50 flex items-center justify-center border">
+                        <img src="${p.image}" class="max-w-full max-h-[400px] object-contain p-6">
                     </div>
                     <div class="flex flex-col">
                         <div class="flex-grow">
-                            <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4">${p.name}</h2>
-                            <div class="flex items-center gap-3 mb-6">
-                                <div class="text-3xl font-black text-blue-600">$${p.price.toFixed(2)}</div>
-                            </div>
+                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold mb-3 uppercase tracking-widest">${p.category}</span>
+                            <h2 class="text-2xl font-extrabold text-gray-800 mb-2">${p.name}</h2>
+                            <div class="text-3xl font-black text-blue-600 mb-6">$${p.price.toFixed(2)}</div>
                             
                             <div class="mb-8">
-                                <h4 class="font-bold text-gray-700 border-b pb-2 mb-3">ព័ត៌មានលម្អិត</h4>
-                                <p class="text-gray-600 leading-relaxed whitespace-pre-wrap">${p.desc}</p>
+                                <h4 class="font-bold text-gray-700 border-b pb-2 mb-3 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    ព័ត៌មានលម្អិត
+                                </h4>
+                                <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">${p.desc}</p>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
-                            <button onclick="addToCart(${p.id}); closeModal();" class="flex items-center justify-center gap-2 bg-gray-100 text-gray-800 py-4 rounded-2xl font-bold hover:bg-gray-200 transition-all">
+                            <button onclick="addToCart(${p.id}); closeModal();" class="flex items-center justify-center gap-2 bg-gray-100 text-gray-800 py-3.5 rounded-2xl font-bold hover:bg-gray-200 transition-all">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                                ដាក់ចូលកន្ត្រក
+                                កន្ត្រក
                             </button>
-                            <button onclick="directOrder(${p.id})" class="bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-md">ទិញឥឡូវនេះ</button>
+                            <button onclick="directOrder(${p.id})" class="bg-blue-600 text-white py-3.5 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">ទិញឥឡូវ</button>
                         </div>
                     </div>
                 </div>
@@ -253,15 +313,12 @@
             document.body.classList.remove("modal-active");
         }
 
-        // --- Cart Functions ---
         function addToCart(id) {
             const p = allProducts.find(x => x.id === id);
             const exists = cart.find(x => x.id === id);
             if (exists) exists.quantity++;
             else cart.push({ ...p, quantity: 1 });
             updateCartUI();
-            if(!document.getElementById("cartSidebar").classList.contains('hidden')) return;
-            // Optionally auto-open cart or show notification
         }
 
         function updateCartUI() {
@@ -274,25 +331,29 @@
             let total = 0;
             let count = 0;
 
+            if(cart.length === 0) {
+                cartItems.innerHTML = `<div class="text-center py-20 text-gray-400"><p>កន្ត្រកទំនេរ...</p></div>`;
+            }
+
             cart.forEach(item => {
                 total += item.price * item.quantity;
                 count += item.quantity;
                 const div = document.createElement("div");
-                div.className = "flex gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm";
+                div.className = "flex gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm";
                 div.innerHTML = `
-                    <img src="${item.image}" class="w-16 h-16 object-cover rounded-lg border">
+                    <img src="${item.image}" class="w-16 h-16 object-cover rounded-xl border">
                     <div class="flex-grow">
-                        <div class="text-xs font-bold line-clamp-1 text-gray-700">${item.name}</div>
+                        <div class="text-[11px] font-bold line-clamp-1 text-gray-700">${item.name}</div>
                         <div class="text-blue-600 font-bold text-sm">$${item.price.toFixed(2)}</div>
                         <div class="flex items-center gap-3 mt-2">
-                            <div class="flex items-center border rounded-lg bg-gray-50">
-                                <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 flex items-center justify-center hover:bg-gray-200">-</button>
-                                <span class="px-3 text-xs font-bold">${item.quantity}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 flex items-center justify-center hover:bg-gray-200">+</button>
+                            <div class="flex items-center border rounded-lg bg-gray-50 overflow-hidden">
+                                <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 flex items-center justify-center hover:bg-gray-200 transition-colors">-</button>
+                                <span class="px-3 text-xs font-bold w-8 text-center">${item.quantity}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 flex items-center justify-center hover:bg-gray-200 transition-colors">+</button>
                             </div>
                         </div>
                     </div>
-                    <button onclick="removeFromCart(${item.id})" class="text-red-300 hover:text-red-500 transition-colors self-center">
+                    <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 transition-colors self-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
                 `;
@@ -321,8 +382,13 @@
 
         function toggleCart() {
             const sb = document.getElementById("cartSidebar");
-            sb.classList.toggle("hidden");
-            setTimeout(() => sb.classList.toggle("translate-x-full"), 10);
+            if(sb.classList.contains('hidden')) {
+                sb.classList.remove('hidden');
+                setTimeout(() => sb.classList.remove('translate-x-full'), 10);
+            } else {
+                sb.classList.add('translate-x-full');
+                setTimeout(() => sb.classList.add('hidden'), 300);
+            }
         }
 
         function toggleHeart(id) {
@@ -336,13 +402,12 @@
         function toggleWishlistDisplay() {
             if(wishlist.length === 0) return;
             filteredProducts = allProducts.filter(p => wishlist.includes(p.id));
+            currentCategory = 'ចំណូលចិត្ត';
             renderProducts(true);
+            document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
         }
 
-        // --- Telegram Integration ---
         function directOrder(id) {
-            const p = allProducts.find(x => x.id === id);
-            // Open Cart and add this item
             addToCart(id);
             toggleCart();
             closeModal();
@@ -353,8 +418,11 @@
             const phone = document.getElementById("custPhone").value.trim();
             const address = document.getElementById("custAddress").value.trim();
 
-            if (cart.length === 0) return alert("សូមដាក់ទំនិញចូលកន្ត្រកជាមុនសិន!");
-            if (!name || !phone || !address) return alert("សូមបំពេញព័ត៌មានអតិថិជនឱ្យបានគ្រប់ជ្រុងជ្រោយ!");
+            if (cart.length === 0) return; 
+            if (!name || !phone || !address) {
+                document.getElementById("custName").focus();
+                return;
+            }
 
             let msg = "🛍️ *ការបញ្ជាទិញថ្មីពីវេបសាយ*%0A";
             msg += "---------------------------%0A";
@@ -373,11 +441,10 @@
             msg += "---------------------------%0A";
             msg += "👉 *សូមអតិថិជនរង់ចាំការទាក់ទងមកវិញ!*";
 
-            // បើក Telegram Link (ប្រើ Markdown Mode បើប្រើ Bot តែសម្រាប់ User Link វាបង្ហាញអត្ថបទធម្មតា)
             window.open(`https://t.me/${TELEGRAM_USER}?text=${msg}`, "_blank");
         }
 
-        // Search Handlers
+        // Search logic
         [document.getElementById('searchInput'), document.getElementById('searchInputMobile')].forEach(input => {
             input.addEventListener('input', (e) => {
                 const val = e.target.value.toLowerCase();
